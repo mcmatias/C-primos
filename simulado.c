@@ -19,7 +19,7 @@ void append(char* s, char c)
         s[len+1] = '\0';
 }
 
-void limpaFrase(char frase[]) {
+char * limpaFrase(char frase[], char fraseLimpa[]) {
 	//preciso acertar
 	//tenho que limpar valores iguais tb
 	char valoresPossiveis[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', ',', '.', ' ', '\0'};
@@ -35,6 +35,7 @@ void limpaFrase(char frase[]) {
 		for(int n = 0; n<strlen(valoresPossiveis); n++){
 		    int ehRepetido = 0;//false
 			if(frase[i] == valoresPossiveis[n]) {
+			    append(fraseLimpa, frase[i]);
 			    for(int m=0; m<strlen(repetidos); m++){
 			        if(frase[i] == repetidos[m]){
 			            ehRepetido = 1;//true
@@ -62,7 +63,10 @@ void limpaFrase(char frase[]) {
 	frase[ultimoCaracter+1] = '\0';
 	
 	printf("%s\n", fraseTemp);
+	printf("fraseLimpa %s\n", fraseLimpa);
 	printf("limpaFrase %s\n", frase);
+	
+	return fraseLimpa;
 } 
 
 void completaChave(char frase[]) {
@@ -89,17 +93,20 @@ void completaChave(char frase[]) {
 	
 } 
 
-void geraChave(char frase[]) {
+void geraChave(char frase[], char fraseLimpa[], char criptografado[]) {
 	
 	int indice  = 0;
+	int indiceGeral = 0;
+    int ultimoCaracter = 0;
 	
-	
-	for(int i=0; i<strlen(frase); i++) {
+	printf("--------------------------------\n");
+	printf("frase %s\n", frase);
+	for(int i=0; i<strlen(fraseLimpa); i++) {
 		
 		char valoresPossiveis[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', ',', '.', ' ', '\0'};
 		int valorFrasei;
 		for(int n=0; n<strlen(valoresPossiveis); n++) {
-				if(valoresPossiveis[n] == frase[i]) {
+				if(valoresPossiveis[n] == fraseLimpa[i]) {
 					valorFrasei = n+1;
 					break;
 				}
@@ -112,24 +119,32 @@ void geraChave(char frase[]) {
 		//    valorFrasei = valorFrasei - 29;
 		//    indice = valorFrasei;
 		//}
+		indiceGeral = valorFrasei+indiceGeral;
+		printf("indice Geral %d\n", indiceGeral);
+	    indice = (indiceGeral % strlen(valoresPossiveis)); //p poder ser circular
+        printf("indice resto %d\n", indice);
+        printf("frase %s\n", frase);
+        printf("frase[%d] %c\n\n", indice, frase[indice]);
+        //o problema ta dando quando mesmo fazendo a divisao, o resto continua sendo maior que 29
 		
-		indice = (valorFrasei % strlen(valoresPossiveis))+indice; //p poder ser circular
-	    // to gerando certo ate o APQS - o  x nem fazendo a mao to chegando
-	    // estando no S da chave o indice seguinte é 35
-		printf("indice %d\n", indice);
-		frase[i] = frase[indice];	
-		
+		criptografado[i] = frase[indice];	
+		ultimoCaracter = i;
 	}
+	criptografado[ultimoCaracter+1] = '\0';
 	
-	printf("geraChave %s\n", frase);
+	printf("geraChave %s\n", criptografado);
 	
 }
  
 int main() { 
 	char frase[100] = "celacanto provoca maremoto";
+	char fraseLimpa[100];
+	char criptografado[100];
+	fraseLimpa[0] = '\0';
+	criptografado[0] = '\0';
     toUpper(frase);
-    limpaFrase(frase);
+    limpaFrase(frase, fraseLimpa);
     completaChave(frase);
-    geraChave(frase);
+    geraChave(frase, fraseLimpa, criptografado);
     return 0; 
 } 
