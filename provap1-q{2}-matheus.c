@@ -60,7 +60,12 @@ int contaAparicoes(int posLetra, int repetidos[]) {
 
 
 	int nRepeticoes = repetidos[posLetra];
-	repetidos[posLetra]++;  
+	if(nRepeticoes == 20) {
+		repetidos[posLetra] = 0;
+	} else {
+		repetidos[posLetra]++;
+	}
+	  
 
 	return nRepeticoes;
 }
