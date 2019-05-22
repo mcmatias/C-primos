@@ -14,10 +14,21 @@ char transpoeLetra(int posLetra, char nRepeticoes, int letraMinuscula) {
 	char letra;
 	printf("posLetra %d\n", posLetra);
 	printf("nRepeticoes %d\n", nRepeticoes);
+	
+	//
+	
+		
+	int indice  = 0;
+	int indiceGeral = 0;
+	
+	indiceGeral = posLetra+nRepeticoes;
+	indice = (indiceGeral % strlen(alfabetoMaiusculo));
+	    
+	    //
 	if(letraMinuscula){
-		letra = alfabetoMinusculo[posLetra+nRepeticoes];
+		letra = alfabetoMinusculo[indice];
 	} else {
-		letra = alfabetoMaiusculo[posLetra+nRepeticoes];
+		letra = alfabetoMaiusculo[indice];
 	}
 	
 	printf("letra transporta %c\n", letra);
