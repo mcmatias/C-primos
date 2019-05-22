@@ -6,49 +6,74 @@
 #define MAXCHAR 1000
 #define N 26
 
+char transpoeLetra(int posLetra, char nRepeticoes) {
+	
+	printf("entrou transpoeLetra\n");
+	char alfabeto[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', '\0'};
+	char letra;
+	printf("posLetra %d\n", posLetra);
+	printf("nRepeticoes %d\n", nRepeticoes);
+	letra = alfabeto[posLetra+nRepeticoes];
+	printf("letra transporta %c\n", letra);
+	
+	return letra;
+	printf("fim transpoeLetra");
+	printf("\n==========================\n");
+}
+
+
 int posicaoLetra (char letra) {
 	
-	printf("\n\n entrou posicaoLetra \n\n");
+	//printf("\n\n entrou posicaoLetra \n\n");
 	char alfabeto[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', '\0'};
 	int posicao = 0;
 	for (int i=0; i<strlen(alfabeto); i++) {
 		if(alfabeto[i] == toupper(letra)) {
 			posicao = i;
-			printf("posicao char atual %d\n", posicao);
+			//printf("posicao char atual %d\n", posicao);
 		}
 	}
 	
 	return posicao;
 }
 
-void contaAparicoes(char str[], char repetidos[]) {
-	
-	
-	printf("\n\n entrou contaAparicoes \n\n");
-	int posicao = 0;
-	
-	for (int a=0; a<strlen(repetidos); a++) {
-		printf("%d - repetidos[posicao] %c\n", a, repetidos[a]);
-	}
-	
-	 for (int i=0; i<strlen(str); i++) 
-    { 
-		if(str[i] !=EOF && str[i]!='\n') {
-			printf("char atual %c", str[i]);
-			posicao = posicaoLetra(str[i]);
-			printf("RETORNO posicao char atual %d\n", posicao);
-			repetidos[posicao]++;  
-			printf("repetidos[posicao] %c", repetidos[posicao]); 
-			printf("\n-------------------------------------\n");  
-		}
-  
-    } 
-    
-    printf("\n\n repetidos %s\n\n", repetidos);
 
+
+int contaAparicoes(int posLetra, int repetidos[]) {
+
+
+	int nRepeticoes = repetidos[posLetra];
+	repetidos[posLetra]++;  
+
+	return nRepeticoes;
 }
 
+void montaChave(char str[], int repetidos[], char criptografado[]) {
+	
+	printf("\n\n ==========================\n");
+	printf("\n\n entrou montaChave \n\n");
+	int posicao = 0;
+	int nRepeticoes = 0;
+	int iteracoes = 0;
+	//printf("repetido %s\n", repetidos);
 
+	for (int i=0; i<strlen(str); i++) {
+		if(str[i] !=EOF && str[i]!='\n') {
+		printf("char atual %c\n", str[i]);
+		posicao = posicaoLetra(str[i]);
+		nRepeticoes = contaAparicoes(posicao, repetidos);
+		printf("posicao %d\n", posicao);
+		printf("nRepeticoes %d\n", nRepeticoes);
+		
+		criptografado[i] = transpoeLetra(posicao, nRepeticoes);
+		iteracoes = i;
+		printf("+++++++++++++++\n criptografado[i] %c\n", criptografado[i]);
+		}
+	}
+	criptografado[iteracoes+1] = '\0';
+	printf("+++++++++++++++\n criptografado %s\n", criptografado);
+
+}
 
 int main() { 
 	FILE *fp;
@@ -73,8 +98,14 @@ int main() {
         
     fclose(fp);
     
-    char repetidos[N+1] = "00000000000000000000000000\0";
+    int repetidos[N] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	
-    contaAparicoes(str, repetidos);
+	char criptografado[100];
+	criptografado[0] = '\0';
+	
+ 
+    montaChave(str, repetidos, criptografado);
+    printf("+++++++++++++++\n criptografado %s", criptografado);
+    
     return 0;
 } 
