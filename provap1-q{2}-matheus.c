@@ -6,14 +6,20 @@
 #define MAXCHAR 1000
 #define N 26
 
-char transpoeLetra(int posLetra, char nRepeticoes) {
+char transpoeLetra(int posLetra, char nRepeticoes, int letraMinuscula) {
 	
 	printf("entrou transpoeLetra\n");
-	char alfabeto[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', '\0'};
+	char alfabetoMaiusculo[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z', '\0'};
+	char alfabetoMinusculo[] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', '\0'};
 	char letra;
 	printf("posLetra %d\n", posLetra);
 	printf("nRepeticoes %d\n", nRepeticoes);
-	letra = alfabeto[posLetra+nRepeticoes];
+	if(letraMinuscula){
+		letra = alfabetoMinusculo[posLetra+nRepeticoes];
+	} else {
+		letra = alfabetoMaiusculo[posLetra+nRepeticoes];
+	}
+	
 	printf("letra transporta %c\n", letra);
 	
 	return letra;
@@ -55,6 +61,7 @@ void montaChave(char str[], int repetidos[], char criptografado[]) {
 	int posicao = 0;
 	int nRepeticoes = 0;
 	int iteracoes = 0;
+	int letraMinuscula = 0;
 	//printf("repetido %s\n", repetidos);
 
 	for (int i=0; i<strlen(str); i++) {
@@ -65,7 +72,13 @@ void montaChave(char str[], int repetidos[], char criptografado[]) {
 		printf("posicao %d\n", posicao);
 		printf("nRepeticoes %d\n", nRepeticoes);
 		
-		criptografado[i] = transpoeLetra(posicao, nRepeticoes);
+		if(islower(str[i])) {
+			letraMinuscula = 1;//1 eh true
+		} else {
+			letraMinuscula = 0;
+		}
+		
+		criptografado[i] = transpoeLetra(posicao, nRepeticoes, letraMinuscula);
 		iteracoes = i;
 		printf("+++++++++++++++\n criptografado[i] %c\n", criptografado[i]);
 		}
