@@ -42,29 +42,31 @@ char modificaText(char letra, int arga, int argA, int argumentoc, int argp, int 
 		if (arga && argA) {
 			if (isupper(letra)) {
 				letra = tolower(letra);
+				//printf("letra minuscula %c\n", letra);
 			} else if (islower(letra)) {
 				letra = toupper(letra);
+				//printf("letra maiuscula %c\n", letra);
 			}
 		} else {
 			if (arga) {
-				printf("argumento -a\n");
+				//printf("argumento -a\n");
 				if (isupper(letra)) {
 					letra = tolower(letra);
 				}
-				
+				//printf("letra minuscula %c\n", letra);
 			}
 			if (argA) {
-				printf("argumento -A\n");
+				//printf("argumento -A\n");
 				if (islower(letra)) {
 					letra = toupper(letra);
 				}
-					
+				//printf("letra minuscula %c\n", letra);	
 			}	
 		}
  
 		if (argumentoc) {
 			if(!isspace(letra)) {
-				printf("argumento -c\n");
+				//printf("argumento -c\n");
 				posicao = posicaoLetra(letra);
 				nRepeticoes = contaAparicoes(posicao, repetidos);
 				printf("letra %c repetida %d vezes\n", letra, nRepeticoes);
@@ -72,7 +74,7 @@ char modificaText(char letra, int arga, int argA, int argumentoc, int argp, int 
 
 		}
 		if (argp) {
-			printf("argumento -p\n");
+			//printf("argumento -p\n");
 		}
 	}
 	
@@ -86,29 +88,27 @@ void lerArquivo(char *texto[], int arga, int argA, int argumentoc, int argp, int
 	int i = 0;
 	
 	while (fgets( str, STRSIZE, stdin ) != NULL) {
-		//linha = NULL;
+
 		int tamanhoLinha;
 		tamanhoLinha = strlen(str);
-		printf("tamanho linha: %d \n", tamanhoLinha-1);
-		//printf( "%s", str );
-		//strcpy(linha, str);
+		//printf("tamanho linha: %d \n", tamanhoLinha-1);
+
 		linha = (char *)calloc(tamanhoLinha,sizeof(char)*tamanhoLinha);
 		linha = NULL;
 		linha = str;
 		
-		printf( "linha %s", linha);
+		//printf( "linha %s", linha);
 		for (int n=0; n<tamanhoLinha-1; n++) {
 			linha[n] = modificaText(linha[n], arga, argA, argumentoc, argp, repetidos);
 		}
-		//printf( "linha[1] %c", linha[1]);
-		//-1 p nao contar o /n
-		//linha = (char *)malloc(sizeof(char)*);
+//
 		texto[i] = linha;
-		printf( "texto i %s\n\n", texto[i]);
+		printf( "%s\n", texto[i]);
 		i++;
 		//strcpy(empresaNoh->nome, str);
 		
 	}
+
 }
 
 int main(int argc, char *argv[])   {       
@@ -152,6 +152,7 @@ int main(int argc, char *argv[])   {
 
 
 	lerArquivo(texto, arga, argA, argumentoc, argp, repetidos);
+	
 	
 	return 0;   
 } 
